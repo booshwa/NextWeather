@@ -15,7 +15,11 @@ import {
 } from "@mui/material";
 
 // Libraries
-import { FetchTimezone, FetchHistoricWeather } from "../Components/FetchAPI";
+import {
+  FetchTimezone,
+  FetchHistoricWeather,
+  FetchFlood,
+} from "../Components/FetchAPI";
 import { useWindowSize } from "usehooks-ts";
 
 // MUI Theme
@@ -26,8 +30,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Block from "../Components/Block";
 import SiteHeader from "../Components/Header";
 import LocationInfo from "../Components/LocationInfo";
-import HistoricWeather from "../Components/HistoricWeather";
+// import HistoricWeather from "../Components/HistoricWeather";
 import Map from "./Map";
+import MeanTemp from "./Graphs/MeanTemp";
+import Precipitation from "./Graphs/Precipitation";
+import FloodDischarge from "./Graphs/FloodDischarge";
 
 const theme = createTheme({
   palette: {
@@ -65,16 +72,13 @@ export default function App() {
   const [site, setSite] = useState(null);
   const [timezoneData, setTimezoneData] = useState<TimezoneData>(null);
   const [historicData, setHistoricData] = useState(null);
-  const [mapDim, setMapDim] = useState({
-    height: "100px",
-  });
+  const [floodData, setFloodData] = useState(null);
 
   console.log({
     site,
     timezoneData,
     historicData,
-    width,
-    height,
+    floodData,
   });
 
   useEffect(() => {
@@ -116,10 +120,29 @@ export default function App() {
     }
   }, [timezoneData]);
 
+  useEffect(() => {
+    if (site && timezoneData && historicData && !floodData) {
+      // declare the data fetching function
+      const fetchData = async () => {
+        // Fetch data from Timezone API
+        setFloodData(
+          // @ts-ignore
+          await FetchFlood(site)
+        );
+      };
+
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }
+  }, [historicData]);
+
   const clear = () => {
     setSite([]);
     setTimezoneData(null);
     setHistoricData(null);
+    setFloodData(null);
   };
 
   return (
@@ -136,12 +159,12 @@ export default function App() {
           style={{ paddingTop: "6em", overflow: "none" }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5}>
               <Box sx={{ height: { xs: 250, md: height - 105 } }}>
                 <Map site={site} setSite={setSite} clear={clear} />
               </Box>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={7}>
               <Box
                 className="scroll"
                 sx={{
@@ -159,7 +182,15 @@ export default function App() {
                 {timezoneData && (
                   <LocationInfo site={site} info={timezoneData} />
                 )}
-                {historicData && <HistoricWeather records={historicData} />}
+                {historicData && (
+                  <>
+                    <MeanTemp data={historicData.temperature} />
+                    <Precipitation data={historicData.precipitation} />
+                  </>
+                )}
+                {floodData && (
+                  <FloodDischarge data={floodData.discharge} />
+                )}
               </Box>
             </Grid>
           </Grid>

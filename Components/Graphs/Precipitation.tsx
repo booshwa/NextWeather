@@ -20,7 +20,7 @@ const Precipitation = ({ data }) => {
   return (
     <Block>
       <Typography variant="subtitle1" gutterBottom>
-        <b>Precipitation for Last 2 weeks (&deg;F)</b>
+        <b>Precipitation for Last 2 weeks (inches)</b>
       </Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
