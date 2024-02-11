@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 // Libraries
-import { FetchTimezone } from "../Components/FetchAPI";
+import { FetchTimezone, FetchHistoricWeather } from "../Components/FetchAPI";
 
 // MUI Theme
 import CssBaseline from "@mui/material/CssBaseline";
@@ -38,19 +38,43 @@ const Map = dynamic(() => import("../Components/Map"), {
 
 import SiteHeader from "../Components/Header";
 import LocationInfo from "../Components/LocationInfo";
+import HistoricWeather from "../Components/HistoricWeather";
+
+interface TimezoneData {
+  abbreviation: string;
+  cityName: string;
+  countryCode: string;
+  countryName: string;
+  dst: string;
+  formatted: string;
+  gmtOffset: number;
+  message: string;
+  nextAbbreviation: string;
+  regionName: string;
+  status: string;
+  timestamp: number;
+  zoneEnd: number;
+  zoneName: string;
+  zoneStart: number;
+}
 
 export default function Home() {
-  const [sites, setSites] = useState([]);
-  const [timezoneData, setTimezoneData] = useState(null);
+  const [site, setSite] = useState(null);
+  const [timezoneData, setTimezoneData] = useState<TimezoneData>(null);
   const [historicData, setHistoricData] = useState(null);
 
-  console.log({ sites, timezoneData, historicData });
+  // console.log({
+  //   site,
+  //   timezoneData,
+  //   historicData,
+  // });
 
   useEffect(() => {
-    if (sites.length > 0) {
+    if (site) {
       // declare the data fetching function
       const fetchData = async () => {
-        setTimezoneData(await FetchTimezone(sites));
+        // Fetch data from Timezone API
+        setTimezoneData(await FetchTimezone(site));
       };
 
       // call the function
@@ -58,7 +82,31 @@ export default function Home() {
         // make sure to catch any error
         .catch(console.error);
     }
-  }, [sites]);
+  }, [site]);
+
+  useEffect(() => {
+    if (site && timezoneData && !historicData) {
+      // declare the data fetching function
+      const fetchData = async () => {
+        // Fetch data from Timezone API
+        setHistoricData(
+          // @ts-ignore
+          await FetchHistoricWeather(site, timezoneData.zoneName)
+        );
+      };
+
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }
+  }, [timezoneData]);
+
+  const clear = () => {
+    setSite([]);
+    setTimezoneData(null);
+    setHistoricData(null);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -70,10 +118,11 @@ export default function Home() {
       <SiteHeader />
       <Box display="flex" justifyContent="center" alignItems="center">
         <Container maxWidth="lg" style={{ paddingTop: "6em" }}>
-          <Map sites={sites} setSites={setSites} />
+          <Map site={site} setSite={setSite} clear={clear} />
           <Divider />
           <br />
-          {timezoneData && <LocationInfo info={timezoneData} />}
+          {timezoneData && <LocationInfo site={site} info={timezoneData} />}
+          {historicData && <HistoricWeather records={historicData} />}
         </Container>
       </Box>
     </ThemeProvider>
