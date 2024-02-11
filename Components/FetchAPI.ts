@@ -5,10 +5,9 @@ import axios from "axios";
 export async function FetchTimezone(sites) {
   const lat = sites[0][0];
   const long = sites[0][1];
-  let timezone_data: any = {};
 
   try {
-    timezone_data = await axios
+    return await axios
       .get(
         `http://api.timezonedb.com/v2.1/get-time-zone?key=${process.env.NEXT_PUBLIC_TIMEZONE_API_KEY}&format=json&by=position&lat=${lat}&lng=${long}`
       )
@@ -17,29 +16,11 @@ export async function FetchTimezone(sites) {
     alert("Error obtaining Timezone");
     return false;
   }
-
-  return {
-    timezone_data,
-  };
 }
 
 async function FetchWeather(sites) {
   const lat = sites[0][0];
   const long = sites[0][1];
-  let timezone_data: any = {};
-
-  try {
-    timezone_data = await axios
-      .get(
-        `http://api.timezonedb.com/v2.1/get-time-zone?key=39BJ202FB6F7&format=json&by=position&lat=${lat}&lng=${long}`
-      )
-      .then((response) => response.data);
-  } catch (err) {
-    alert("Error obtaining Timezone");
-    return false;
-  }
-
-  console.log({ timezone_data });
 
   //   const params = {
   //     latitude: lat,

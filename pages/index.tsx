@@ -26,9 +26,9 @@ const theme = createTheme({
     mode: "dark",
     primary: { main: "#275f9f" },
   },
-  // typography: {
-  //   fontSize: 12.6, // 14px - 10% = 12.6px
-  // },
+  typography: {
+    fontSize: 12.6, // 14px - 10% = 12.6px
+  },
 });
 
 // Components
@@ -72,7 +72,7 @@ export default function Home() {
         <Container maxWidth="lg" style={{ paddingTop: "6em" }}>
           <Map sites={sites} setSites={setSites} />
           <Divider />
-
+          <br />
           {timezoneData && <LocationInfo info={timezoneData} />}
         </Container>
       </Box>
