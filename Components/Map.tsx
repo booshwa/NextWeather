@@ -20,7 +20,6 @@ const icon = L.icon({
 const Map = ({ site, setSite, clear }) => {
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState([42.1908, -91.7852]);
-  // const [bbox, setBbox] = useState([-91.8852, 41.8908, -91.6852, 42.4908]);
 
   const MapClick = () => {
     useMapEvent("click", (e) => {
@@ -34,17 +33,22 @@ const Map = ({ site, setSite, clear }) => {
 
   return (
     <MapContainer
+      //@ts-ignore
       center={center}
       zoom={7}
-      style={{ height: "400px" }}
+      id="map"
+      // style={{ position: "absolute", top: "0px", bottom: "0px", width: "100%" }}
+      // style={{ height: "500px" }}
       ref={setMap}
     >
       <MapClick />
       <TileLayer
+        //@ts-ignore
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {site && (
+        //@ts-ignore
         <Marker position={[site.latitude, site.longitude]} icon={icon}>
           <Popup>{`${site.latitude}, ${site.longitude}`}</Popup>
         </Marker>

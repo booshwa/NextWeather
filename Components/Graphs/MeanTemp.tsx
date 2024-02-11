@@ -41,19 +41,22 @@ const MeanTemp = ({ data }) => {
           <Line
             type="monotone"
             dataKey="Min"
-            stroke="#8884d8"
+            stroke="#1D4099"
+            strokeWidth={2} 
             activeDot={{ r: 8 }}
           />
           <Line
             type="monotone"
             dataKey="Mean"
-            stroke="#82ca9d"
+            stroke="#235B19"
+            strokeWidth={2} 
             activeDot={{ r: 8 }}
           />
           <Line
             type="monotone"
             dataKey="Max"
-            stroke="#82ca9d"
+            stroke="#85424F"
+            strokeWidth={2} 
             activeDot={{ r: 8 }}
           />
         </LineChart>

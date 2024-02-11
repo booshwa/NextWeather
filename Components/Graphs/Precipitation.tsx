@@ -36,11 +36,11 @@ const Precipitation = ({ data }) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="Date" />
-          <YAxis domain={[0, "dataMax + .05"]} />
-          <Tooltip />
+          <YAxis domain={[0, "dataMax + 0.02"]} />
+          <Tooltip cursor={false} />
           <Legend />
-          <Bar dataKey="Rain" stackId="a" fill="#8884d8" />
-          <Bar dataKey="Snow" stackId="a" fill="#82ca9d" />
+          <Bar dataKey="Rain" stackId="a" fill="#345777" />
+          <Bar dataKey="Snow" stackId="a" fill="#CCCCCC" />
         </BarChart>
       </ResponsiveContainer>
     </Block>
