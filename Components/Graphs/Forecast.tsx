@@ -1,7 +1,7 @@
 import React from "react";
 
 // MUI
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, Box } from "@mui/material";
 
 // Components
 import Block from "../Block";
@@ -294,20 +294,27 @@ const Forecast = ({ data }) => {
   const Item = ({ record, last }) => {
     const lookup = wmo_lookup[record.Code].day;
 
+    const borderRight = last ? "none" : "1px solid #7c7c7c";
+
     return (
-      <div
+      <Box
         style={{
           margin: ".25em",
           padding: "6px",
           textAlign: "center",
-          borderRight: last ? "none" : "1px solid #7c7c7c",
+          // borderRight: last ? "none" : "1px solid #7c7c7c",
+        }}
+        sx={{
+          borderRight: { xs: "none", md: borderRight },
+          borderBottom: { xs: "1px solid #7c7c7c", md: "none" },
         }}
       >
         <img src={lookup.image} />
+        <br />
         {lookup.description}
         <br />
         {record.Date}
-      </div>
+      </Box>
     );
   };
 
@@ -315,7 +322,7 @@ const Forecast = ({ data }) => {
     <Block>
       <Typography variant="subtitle1" gutterBottom>
         <b>7 Day Forecast</b>
-        <Grid container spacing={0.5} columns={7}>
+        <Grid container spacing={0.5} columns={{ xs: 2, md: 7 }}>
           {data.map((record, index) => {
             return (
               <Grid item xs={1} key={index}>

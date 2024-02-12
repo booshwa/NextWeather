@@ -9,7 +9,7 @@ export async function FetchTimezone(site) {
   try {
     return await axios
       .get(
-        `http://api.timezonedb.com/v2.1/get-time-zone?key=${process.env.NEXT_PUBLIC_TIMEZONE_API_KEY}&format=json&by=position&lat=${lat}&lng=${long}`
+        `https://api.timezonedb.com/v2.1/get-time-zone?key=${process.env.NEXT_PUBLIC_TIMEZONE_API_KEY}&format=json&by=position&lat=${lat}&lng=${long}`
       )
       .then((response) => response.data);
   } catch (err) {
@@ -135,11 +135,11 @@ export async function FetchHistoricWeather(site, timezone_name) {
     });
   }
 
-  console.error({
-    temperature,
-    precipitation,
-    weatherData,
-  });
+  // console.error({
+  //   temperature,
+  //   precipitation,
+  //   weatherData,
+  // });
 
   return {
     temperature,
