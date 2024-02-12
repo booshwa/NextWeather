@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-// react leaflet
+// Leaflet
 import L from "leaflet";
 import {
   MapContainer,
@@ -19,7 +19,7 @@ const icon = L.icon({
 
 const Map = ({ site, setSite, clear }) => {
   const [map, setMap] = useState(null);
-  const [center, setCenter] = useState([42.1908, -91.7852]);
+  const [center, setCenter] = useState([39.8283, -98.5795]);
 
   const MapClick = () => {
     useMapEvent("click", (e) => {
@@ -35,7 +35,7 @@ const Map = ({ site, setSite, clear }) => {
     <MapContainer
       //@ts-ignore
       center={center}
-      zoom={7}
+      zoom={5}
       id="map"
       // style={{ position: "absolute", top: "0px", bottom: "0px", width: "100%" }}
       // style={{ height: "500px" }}

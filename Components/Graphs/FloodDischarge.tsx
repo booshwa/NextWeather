@@ -1,8 +1,10 @@
 import React from "react";
 
+// MUI
 import { Typography } from "@mui/material";
-import moment from "moment";
 
+// Libraries
+import moment from "moment";
 import {
   LineChart,
   Line,
@@ -15,6 +17,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Components
 import Block from "../Block";
 
 const FloodDischarge = ({ data }) => {

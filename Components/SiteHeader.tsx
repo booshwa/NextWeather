@@ -1,9 +1,8 @@
 import React from "react";
+
+// MUI
 import {
-  Container,
-  Avatar,
   Typography,
-  Button,
   Toolbar,
   Box,
   AppBar,

@@ -1,18 +1,9 @@
 import React from "react";
 
-import { Typography, Grid, Divider } from "@mui/material";
+// MUI
+import { Typography, Grid } from "@mui/material";
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-
+// Components
 import Block from "../Block";
 
 // https://gist.github.com/stellasphere/9490c195ed2b53c707087c8c2db4ec0cI
@@ -327,11 +318,9 @@ const Forecast = ({ data }) => {
         <Grid container spacing={0.5} columns={7}>
           {data.map((record, index) => {
             return (
-              <>
-                <Grid item xs={1} key={index}>
-                  <Item record={record} last={index === 6} />
-                </Grid>
-              </>
+              <Grid item xs={1} key={index}>
+                <Item record={record} last={index === 6} />
+              </Grid>
             );
           })}
         </Grid>

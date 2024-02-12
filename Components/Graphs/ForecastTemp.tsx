@@ -1,7 +1,9 @@
 import React from "react";
 
+// MUI
 import { Typography } from "@mui/material";
 
+// Libraries
 import {
   LineChart,
   Line,
@@ -13,6 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Components
 import Block from "../Block";
 
 const ForecastTemp = ({ data }) => {

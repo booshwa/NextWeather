@@ -2,17 +2,9 @@ import React, { useEffect, useState } from "react";
 
 // NexJS
 import Head from "next/head";
-import dynamic from "next/dynamic";
 
-import {
-  Typography,
-  Chip,
-  Box,
-  Grid,
-  Divider,
-  Button,
-  Container,
-} from "@mui/material";
+// MUI
+import { Typography, Box, Grid, CircularProgress } from "@mui/material";
 
 // Libraries
 import {
@@ -76,17 +68,17 @@ export default function App() {
   const [timezoneData, setTimezoneData] = useState<TimezoneData>(null);
   const [historicData, setHistoricData] = useState(null);
   const [floodData, setFloodData] = useState(null);
-  const [climateChangeData, setClimateChangedata] = useState(null);
+  // const [climateChangeData, setClimateChangedata] = useState(null);
   const [forecastData, setForecastData] = useState(null);
 
-  console.log({
-    site,
-    timezoneData,
-    historicData,
-    floodData,
-    climateChangeData,
-    forecastData,
-  });
+  // console.log({
+  //   site,
+  //   timezoneData,
+  //   historicData,
+  //   floodData,
+  //   // climateChangeData,
+  //   forecastData,
+  // });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -110,7 +102,25 @@ export default function App() {
   }, [site]);
 
   useEffect(() => {
-    if (site && timezoneData && !historicData) {
+    if (site && timezoneData && !forecastData) {
+      // declare the data fetching function
+      const fetchData = async () => {
+        // Fetch data from Timezone API
+        setForecastData(
+          // @ts-ignore
+          await fetchForecast(site, timezoneData.zoneName)
+        );
+      };
+
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }
+  }, [timezoneData]);
+
+  useEffect(() => {
+    if (site && timezoneData && forecastData && !historicData) {
       // declare the data fetching function
       const fetchData = async () => {
         // Fetch data from Timezone API
@@ -125,10 +135,10 @@ export default function App() {
         // make sure to catch any error
         .catch(console.error);
     }
-  }, [timezoneData]);
+  }, [forecastData]);
 
   useEffect(() => {
-    if (site && timezoneData && historicData && !floodData) {
+    if (site && timezoneData && forecastData && historicData && !floodData) {
       // declare the data fetching function
       const fetchData = async () => {
         // Fetch data from Timezone API
@@ -149,6 +159,7 @@ export default function App() {
   //   if (
   //     site &&
   //     timezoneData &&
+  //     forecastData &&
   //     historicData &&
   //     floodData &&
   //     !climateChangeData
@@ -169,30 +180,12 @@ export default function App() {
   //   }
   // }, [floodData]);
 
-  useEffect(() => {
-    if (site && timezoneData && historicData && floodData && !forecastData) {
-      // declare the data fetching function
-      const fetchData = async () => {
-        // Fetch data from Timezone API
-        setForecastData(
-          // @ts-ignore
-          await fetchForecast(site, timezoneData.zoneName)
-        );
-      };
-
-      // call the function
-      fetchData()
-        // make sure to catch any error
-        .catch(console.error);
-    }
-  }, [floodData]);
-
   const clear = () => {
     setSite([]);
     setTimezoneData(null);
     setHistoricData(null);
     setFloodData(null);
-    setClimateChangedata(null);
+    // setClimateChangedata(null);
     setForecastData(null);
   };
 
@@ -234,27 +227,65 @@ export default function App() {
                     <div style={{ textAlign: "center" }}>
                       <Typography variant="subtitle1" gutterBottom>
                         Click on an area of the map to view it's weather
-                        history.
+                        forecast and history.
                       </Typography>
                     </div>
                   </Block>
                 )}
-                {timezoneData && (
-                  <LocationInfo site={site} info={timezoneData} />
-                )}
-                {forecastData && (
-                  <>
-                    <Forecast data={forecastData.weatherCode} />
-                    <ForecastTemp data={forecastData.forecast} />
-                  </>
-                )}
-                {historicData && (
-                  <>
-                    <MeanTemp data={historicData.temperature} />
-                    <Precipitation data={historicData.precipitation} />
-                  </>
-                )}
-                {floodData && <FloodDischarge data={floodData.discharge} />}
+
+                {site &&
+                  (!timezoneData ||
+                    !forecastData ||
+                    !historicData ||
+                    !floodData) && (
+                    <Block
+                      style={{
+                        position: "relative",
+                        zIndex: 0,
+                        textAlign: "center",
+                      }}
+                    >
+                      <Typography variant="subtitle1" gutterBottom>
+                        <CircularProgress
+                          size="1rem"
+                          color="inherit"
+                          style={{ marginRight: "8px" }}
+                        />
+                        <b>Fetching Weather API...</b>
+                      </Typography>
+                    </Block>
+                  )}
+
+                {site &&
+                  timezoneData &&
+                  forecastData &&
+                  historicData &&
+                  floodData && <LocationInfo site={site} info={timezoneData} />}
+                {site &&
+                  timezoneData &&
+                  forecastData &&
+                  historicData &&
+                  floodData && (
+                    <>
+                      <Forecast data={forecastData.weatherCode} />
+                      <ForecastTemp data={forecastData.forecast} />
+                    </>
+                  )}
+                {site &&
+                  timezoneData &&
+                  forecastData &&
+                  historicData &&
+                  floodData && (
+                    <>
+                      <MeanTemp data={historicData.temperature} />
+                      <Precipitation data={historicData.precipitation} />
+                    </>
+                  )}
+                {site &&
+                  timezoneData &&
+                  forecastData &&
+                  historicData &&
+                  floodData && <FloodDischarge data={floodData.discharge} />}
                 <Block>
                   <div style={{ textAlign: "center" }}>
                     <Typography variant="subtitle1" gutterBottom>

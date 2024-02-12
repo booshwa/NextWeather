@@ -1,11 +1,12 @@
 import React from "react";
 
+// MUI
 import { Typography } from "@mui/material";
 
+// Libraries
 import {
   BarChart,
   Bar,
-  Rectangle,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -14,6 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Components
 import Block from "../Block";
 
 const Precipitation = ({ data }) => {

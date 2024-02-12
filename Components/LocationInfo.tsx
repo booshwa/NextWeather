@@ -3,43 +3,20 @@ import React from "react";
 // MUI
 import {
   Typography,
-  Chip,
-  Box,
   Grid,
-  Divider,
-  Button,
-  Container,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  Accordion,
-  AccordionActions,
-  AccordionSummary,
-  AccordionDetails,
 } from "@mui/material";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+// Components
 import RenderValue from "./RenderValue";
 import Block from "./Block";
 
 const LocationInfo = ({ site, info }) => {
   return (
-    // <Accordion>
-    //   <AccordionSummary
-    //     expandIcon={<ExpandMoreIcon />}
-    //     aria-controls="location-info-content"
-    //     id="location-info-header"
-    //   >
-    //     <Typography variant="subtitle1" gutterBottom>
-    //       <b>Location Info</b>
-    //     </Typography>
-    //   </AccordionSummary>
-
-    //   <AccordionDetails>
     <Block>
       <Typography variant="subtitle1" gutterBottom>
         <b>Location Info</b>
@@ -127,9 +104,6 @@ const LocationInfo = ({ site, info }) => {
         </Grid>
       </Grid>
     </Block>
-
-    //   </AccordionDetails>
-    // </Accordion>
   );
 };
 
