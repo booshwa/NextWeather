@@ -19,7 +19,8 @@ import {
   FetchTimezone,
   FetchHistoricWeather,
   FetchFlood,
-  FetchClimate,
+  fetchForecast,
+  // FetchClimate,
 } from "../Components/FetchAPI";
 import { useWindowSize } from "usehooks-ts";
 
@@ -35,6 +36,8 @@ import Map from "./Map";
 import MeanTemp from "./Graphs/MeanTemp";
 import Precipitation from "./Graphs/Precipitation";
 import FloodDischarge from "./Graphs/FloodDischarge";
+import Forecast from "./Graphs/Forecast";
+import ForecastTemp from "./Graphs/ForecastTemp";
 
 const theme = createTheme({
   palette: {
@@ -74,6 +77,7 @@ export default function App() {
   const [historicData, setHistoricData] = useState(null);
   const [floodData, setFloodData] = useState(null);
   const [climateChangeData, setClimateChangedata] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
 
   console.log({
     site,
@@ -81,6 +85,7 @@ export default function App() {
     historicData,
     floodData,
     climateChangeData,
+    forecastData,
   });
 
   useEffect(() => {
@@ -164,12 +169,31 @@ export default function App() {
   //   }
   // }, [floodData]);
 
+  useEffect(() => {
+    if (site && timezoneData && historicData && floodData && !forecastData) {
+      // declare the data fetching function
+      const fetchData = async () => {
+        // Fetch data from Timezone API
+        setForecastData(
+          // @ts-ignore
+          await fetchForecast(site, timezoneData.zoneName)
+        );
+      };
+
+      // call the function
+      fetchData()
+        // make sure to catch any error
+        .catch(console.error);
+    }
+  }, [floodData]);
+
   const clear = () => {
     setSite([]);
     setTimezoneData(null);
     setHistoricData(null);
     setFloodData(null);
     setClimateChangedata(null);
+    setForecastData(null);
   };
 
   return (
@@ -217,6 +241,12 @@ export default function App() {
                 )}
                 {timezoneData && (
                   <LocationInfo site={site} info={timezoneData} />
+                )}
+                {forecastData && (
+                  <>
+                    <Forecast data={forecastData.weatherCode} />
+                    <ForecastTemp data={forecastData.forecast} />
+                  </>
                 )}
                 {historicData && (
                   <>
