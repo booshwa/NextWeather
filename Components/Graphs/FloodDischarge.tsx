@@ -60,7 +60,7 @@ const FloodDischarge = ({ data }) => {
           <Line
             type="monotone"
             dataKey="Discharge Mean"
-            stroke="#85424F"
+            stroke="#50D3AE"
             strokeWidth={2}
           />
           <Line
@@ -72,7 +72,7 @@ const FloodDischarge = ({ data }) => {
           <Line
             type="monotone"
             dataKey="Discharge Max"
-            stroke="#85424F"
+            stroke="#D6972C"
             strokeWidth={2}
           />
         </LineChart>

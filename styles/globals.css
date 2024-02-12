@@ -19,27 +19,21 @@ body,
   filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
-/* #map-container {
-  height: 90vh;
-  width: 100%;
-} */
-
 #map {
   width: 100%;
   height: 100%;
-  border-radius: 0.625em;
+  border-radius: 0.625em !important;
 }
 
 .paper_block {
   padding: 1.5em;
   margin-bottom: 1em;
-  border-radius: 0.625em;
+  border-radius: 0.625em !important;
 }
 
 .scroll {
   overflow-y: auto;
 }
-
 
 /* Chrome, Edge and Safari */
 *::-webkit-scrollbar {
@@ -71,4 +65,8 @@ body,
 
 *::-webkit-scrollbar-thumb:active {
   background-color: #000000;
+}
+
+.animated .MuiGrid-item {
+  transition: all .5s ease-in-out;
 }

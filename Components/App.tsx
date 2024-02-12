@@ -19,6 +19,7 @@ import {
   FetchTimezone,
   FetchHistoricWeather,
   FetchFlood,
+  FetchClimate,
 } from "../Components/FetchAPI";
 import { useWindowSize } from "usehooks-ts";
 
@@ -28,9 +29,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Components
 import Block from "../Components/Block";
-import SiteHeader from "../Components/Header";
+import SiteHeader from "./SiteHeader";
 import LocationInfo from "../Components/LocationInfo";
-// import HistoricWeather from "../Components/HistoricWeather";
 import Map from "./Map";
 import MeanTemp from "./Graphs/MeanTemp";
 import Precipitation from "./Graphs/Precipitation";
@@ -42,7 +42,7 @@ const theme = createTheme({
     primary: { main: "#275f9f" },
   },
   typography: {
-    fontSize: 12.6, // 14px - 10% = 12.6px
+    fontSize: 12.6,
   },
 });
 
@@ -73,12 +73,14 @@ export default function App() {
   const [timezoneData, setTimezoneData] = useState<TimezoneData>(null);
   const [historicData, setHistoricData] = useState(null);
   const [floodData, setFloodData] = useState(null);
+  const [climateChangeData, setClimateChangedata] = useState(null);
 
   console.log({
     site,
     timezoneData,
     historicData,
     floodData,
+    climateChangeData,
   });
 
   useEffect(() => {
@@ -138,11 +140,36 @@ export default function App() {
     }
   }, [historicData]);
 
+  // useEffect(() => {
+  //   if (
+  //     site &&
+  //     timezoneData &&
+  //     historicData &&
+  //     floodData &&
+  //     !climateChangeData
+  //   ) {
+  //     // declare the data fetching function
+  //     const fetchData = async () => {
+  //       // Fetch data from Timezone API
+  //       setFloodData(
+  //         // @ts-ignore
+  //         await FetchClimate(site)
+  //       );
+  //     };
+
+  //     // call the function
+  //     fetchData()
+  //       // make sure to catch any error
+  //       .catch(console.error);
+  //   }
+  // }, [floodData]);
+
   const clear = () => {
     setSite([]);
     setTimezoneData(null);
     setHistoricData(null);
     setFloodData(null);
+    setClimateChangedata(null);
   };
 
   return (
@@ -154,13 +181,19 @@ export default function App() {
       <CssBaseline />
       <SiteHeader />
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Container
-          maxWidth="xl"
-          style={{ paddingTop: "6em", overflow: "none" }}
-        >
-          <Grid container spacing={2}>
+        <Box style={{ paddingTop: "1em", overflow: "none", width: "100%" }}>
+          <Grid
+            container
+            spacing={2}
+            style={{
+              margin: "-16px 0 0 -10px",
+              width: "100%",
+            }}
+          >
             <Grid item xs={12} md={5}>
-              <Box sx={{ height: { xs: 250, md: height - 105 } }}>
+              <Box
+                sx={{ height: { xs: 250, md: height - 95 }, p: "0 0 0 5px" }}
+              >
                 <Map site={site} setSite={setSite} clear={clear} />
               </Box>
             </Grid>
@@ -168,15 +201,18 @@ export default function App() {
               <Box
                 className="scroll"
                 sx={{
-                  height: { xs: height - 355, md: height - 105 },
+                  height: { xs: height - 355, md: height - 95 },
                   pr: "0.5em !important",
                 }}
               >
                 {!site && (
                   <Block>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Click on an area of the map to view it's weather history.
-                    </Typography>
+                    <div style={{ textAlign: "center" }}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Click on an area of the map to view it's weather
+                        history.
+                      </Typography>
+                    </div>
                   </Block>
                 )}
                 {timezoneData && (
@@ -188,13 +224,20 @@ export default function App() {
                     <Precipitation data={historicData.precipitation} />
                   </>
                 )}
-                {floodData && (
-                  <FloodDischarge data={floodData.discharge} />
-                )}
+                {floodData && <FloodDischarge data={floodData.discharge} />}
+                <Block>
+                  <div style={{ textAlign: "center" }}>
+                    <Typography variant="subtitle1" gutterBottom>
+                      This application uses APIs from{" "}
+                      <a href="https://timezonedb.com/">Timezonedb</a> and{" "}
+                      <a href="https://open-meteo.com/">Open-Meteo</a>.
+                    </Typography>
+                  </div>
+                </Block>
               </Box>
             </Grid>
           </Grid>
-        </Container>
+        </Box>
       </Box>
     </ThemeProvider>
   );

@@ -233,3 +233,71 @@ export async function FetchFlood(site) {
 
   return { discharge };
 }
+
+// export async function FetchClimate(site) {
+//   const lat = site.latitude;
+//   const long = site.longitude;
+//   const params = {
+//     latitude: lat,
+//     longitude: long,
+//     start_date: "1950-01-01",
+//     end_date: "2050-12-31",
+//     daily: ["temperature_2m_mean", "temperature_2m_max", "temperature_2m_min"],
+//   };
+//   const url = "https://climate-api.open-meteo.com/v1/climate";
+//   const responses = await fetchWeatherApi(url, params);
+
+//   // Helper function to form time ranges
+//   const range = (start: number, stop: number, step: number) =>
+//     Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+
+//   // Process first location. Add a for-loop for multiple locations or weather models
+//   const response = responses[0];
+
+//   // Attributes for timezone and location
+//   const utcOffsetSeconds = response.utcOffsetSeconds();
+//   const timezone = response.timezone();
+//   const timezoneAbbreviation = response.timezoneAbbreviation();
+//   const latitude = response.latitude();
+//   const longitude = response.longitude();
+
+//   const daily = response.daily()!;
+
+//   // Note: The order of weather variables in the URL query and the indices below need to match!
+//   const weatherData = {
+//     daily: {
+//       time: range(
+//         Number(daily.time()),
+//         Number(daily.timeEnd()),
+//         daily.interval()
+//       ).map((t) => new Date((t + utcOffsetSeconds) * 1000)),
+//       temperature2mMean: daily.variables(0)!.valuesArray()!,
+//       temperature2mMax: daily.variables(1)!.valuesArray()!,
+//       temperature2mMin: daily.variables(2)!.valuesArray()!,
+//     },
+//   };
+
+//   // `weatherData` now contains a simple structure with arrays for datetime and weather data
+//   let climate = [];
+//   for (let i = 0; i < weatherData.daily.time.length; i++) {
+//     climate.push({
+//       Date: moment(weatherData.daily.time[i]).format("M/D/YY"),
+//       Mean: isNaN(weatherData.daily.temperature2mMean[i])
+//         ? null
+//         : weatherData.daily.temperature2mMean[i].toFixed(2),
+//       Min: isNaN(weatherData.daily.temperature2mMin[i])
+//         ? null
+//         : weatherData.daily.temperature2mMin[i].toFixed(2),
+//       Max: isNaN(weatherData.daily.temperature2mMax[i])
+//         ? null
+//         : weatherData.daily.temperature2mMax[i].toFixed(2),
+//     });
+//   }
+
+//   console.error({
+//     climate,
+//     weatherData,
+//   });
+
+//   return { climate };
+// }
